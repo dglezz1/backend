@@ -45,13 +45,25 @@ export class QuotesController {
       const allergies = typeof body.allergies === 'string' ? (body.allergies === 'true' || body.allergies === 'yes') : !!body.allergies;
       const agreement = typeof body.agreement === 'string' ? (body.agreement === 'true' || body.agreement === 'yes') : !!body.agreement;
       const quote = await this.quotesService.createQuote({ ...body, guests, allergies, agreement, imageUrls });
-      // Responder con el formato esperado por el frontend
+      // Banner visual para frontend con botones de WhatsApp y descarga PDF (solo como datos, no HTML)
+      const pdfUrl = `/api/quotes/${quote.id}/pdf`;
+      const whatsappNumber = '+52 771-722-7089';
+      const whatsappLink = `https://wa.me/527717227089?text=Hola%20Frimousse,%20me%20interesa%20cotizar%20un%20pastel`;
       return {
         success: true,
         data: {
           quoteNumber: quote.id,
-          whatsappNumber: '+52 771-722-7089',
-          quote
+          whatsappNumber,
+          pdfUrl,
+          quote,
+          banner: {
+            logo: '/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png',
+            title: '¡Cotización enviada!',
+            message: 'Puedes contactarnos por WhatsApp para recibir tu precio final o descargar tu PDF.',
+            whatsappLink,
+            pdfUrl,
+            brand: 'Frimousse Pâtisserie · Cotización generada automáticamente'
+          }
         }
       };
     } catch (e) {
@@ -70,7 +82,7 @@ export class QuotesController {
     if (!quote) {
       throw new BadRequestException('Cotización no encontrada');
     }
-    const pdfBuffer = generateQuotePdf(quote);
+    const pdfBuffer = await generateQuotePdf(quote);
     res.set({
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="cotizacion_${id}.pdf"`,
