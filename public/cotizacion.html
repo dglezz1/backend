@@ -1,0 +1,214 @@
+<!-- This file has been removed as part of the update. -->
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="es" data-bss-forced-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Frimousse Pâtisserie - Cotiza tu Pastel</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/home-styles.css">
+    <link rel="stylesheet" href="/assets/css/quote-form.css">
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/form-handler.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div style="text-align:center;padding:20px 0;">
+          <img src="/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png" width="120" height="120" alt="Frimousse Pâtisserie">
+          <div style="margin-top:15px;"><a href="/index-home.html" style="color:#a259b5;text-decoration:none;font-weight:500;margin-right:20px;"><i class="fas fa-home"></i> Volver al Inicio </a></div>
+        </div>
+        <div class="header">
+            <h1>🎂 COTIZA TU PASTEL</h1>
+            <p>Frimousse Pâtisserie</p>
+        </div>
+        <div class="form-container">
+            <div class="info-box">
+                <p><strong>Completa el formulario para solicitar información sobre tu pastel.</strong> Sé lo más detallado posible para poder brindarte una mejor atención.</p><br>
+                <p><strong>📱 Para recibir tu cotización es necesario que compartas el archivo vía WhatsApp</strong></p><br><br>
+                <p><span class="required">*</span> Indica que la pregunta es obligatoria</p>
+            </div>
+            <form id="cakeQuoteForm" enctype="multipart/form-data">
+                <div class="form-group"><label for="fullName">Nombre y apellido <span class="required">*</span></label><input type="text" id="fullName" name="fullName" required=""></div>
+                <div class="form-group"><label for="contact">Número de contacto <span class="required">*</span></label><input type="tel" id="contact" name="contact" required=""></div>
+                <div class="form-group"><label for="socialMedia">Perfil de redes sociales</label><input type="text" id="socialMedia" name="socialMedia" placeholder="Facebook, Instagram o TikTok (opcional)"><small>Solo es con la finalidad de poder responder en tu chat.</small></div>
+                <div class="form-group"><label for="guests">¿Para cuántos invitados te gustaría tu pastel? <span class="required">*</span></label>
+                    <div class="range-container"><input type="range" class="range-slider" id="guests" max="500" min="10" name="guests" required="" step="10" value="10">
+                        <div class="range-display"><span id="guestCount">10</span><span> personas </span></div>
+                    </div><small>El tamaño mínimo para pedido es de 10 personas.</small>
+                    <div id="deliveryAlert" class="delivery-alert" style="display:none;"><span> ⚠️ Entregas a domicilio solo disponibles en pasteles mayores a 100 personas </span></div>
+                </div>
+                <div class="form-group"><label>¿Tienes algún diseño en mente? Puedes subir ejemplos de tu diseño.</label>
+                    <div class="file-upload"><input type="file" accept="image/*" id="designFiles" max="5" multiple="" name="designFiles">
+                        <p>📸 Haz clic para subir hasta 5 imágenes</p><small>Archivos compatibles: JPG, PNG, WebP. Tamaño máximo: 5 MB por archivo.</small>
+                    </div>
+                    <div id="imagePreview" class="image-preview-container" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;"><small style="color:#666;font-style:italic;">Las imágenes seleccionadas aparecerán aquí</small></div>
+                </div>
+                <div class="form-group"><label for="designChanges">¿Agregarías algún cambio al diseño?</label><textarea id="designChanges" name="designChanges" placeholder="Describe los cambios que te gustaría hacer..." rows="4"></textarea></div>
+                <div class="form-group"><label>Arma tu Pastel <span class="required">*</span></label>
+                    <p><small>Selecciona el tipo de pastel que deseas. <strong>Los precios NO se muestran aquí - solo se envían por WhatsApp</strong>.</small></p>
+                    <div class="cake-cards-container">
+                        <div class="cake-card" id="threeMilkCard">
+                            <div class="cake-card-header">
+                                <div class="cake-card-icon"><span>🥛</span></div><input type="radio" class="cake-type-radio" id="threeMilk" name="cakeType" required="" value="threeMilk"><label class="cake-card-title" for="threeMilk">Pasteles 3 Leches</label>
+                                <div class="cake-card-note"><span>*Los pasteles 3 leches quedan limitados a decoraciones en crema</span></div>
+                            </div>
+                            <div id="threeMilkSection" class="cake-options-section" style="display:none;">
+                                <div class="options-grid">
+                                    <div class="option-item"><input type="radio" id="durazno" name="threeMilkFlavor" value="durazno"><label class="option-label" for="durazno">Durazno</label></div>
+                                    <div class="option-item"><input type="radio" id="fresas_3l" name="threeMilkFlavor" value="fresas"><label class="option-label" for="fresas_3l">Fresas con crema</label></div>
+                                    <div class="option-item"><input type="radio" id="pinon" name="threeMilkFlavor" value="pinon"><label class="option-label" for="pinon">Piñón</label></div>
+                                    <div class="option-item"><input type="radio" id="pistache_3l" name="threeMilkFlavor" value="pistache"><label class="option-label" for="pistache_3l">Pistache</label></div>
+                                    <div class="option-item"><input type="radio" id="oreo_3l" name="threeMilkFlavor" value="oreo"><label class="option-label" for="oreo_3l">Oreo</label></div>
+                                    <div class="option-item"><input type="radio" id="moka_3l" name="threeMilkFlavor" value="moka"><label class="option-label" for="moka_3l">Moka</label></div>
+                                    <div class="option-item"><input type="radio" id="cereza_3l" name="threeMilkFlavor" value="cereza"><label class="option-label" for="cereza_3l">Cereza con nuez</label></div>
+                                    <div class="option-item"><input type="radio" id="nuez_3l" name="threeMilkFlavor" value="nuez"><label class="option-label" for="nuez_3l">Nuez</label></div>
+                                    <div class="option-item"><input type="radio" id="frutos_3l" name="threeMilkFlavor" value="frutos"><label class="option-label" for="frutos_3l">Frutos rojos</label></div>
+                                    <div class="option-item"><input type="radio" id="frutas_3l" name="threeMilkFlavor" value="frutas"><label class="option-label" for="frutas_3l">Frutas</label></div>
+                                    <div class="option-item"><input type="radio" id="coco_3l" name="threeMilkFlavor" value="coco"><label class="option-label" for="coco_3l">Coco</label></div>
+                                    <div class="option-item"><input type="radio" id="mango_3l" name="threeMilkFlavor" value="mango"><label class="option-label" for="mango_3l">Mango</label></div>
+                                    <div class="option-item"><input type="radio" id="chocoavellana_3l" name="threeMilkFlavor" value="chocoavellana"><label class="option-label" for="chocoavellana_3l">Chocoavellana</label></div>
+                                    <div class="option-item"><input type="radio" id="cajeta_3l" name="threeMilkFlavor" value="cajeta"><label class="option-label" for="cajeta_3l">Cajeta con nuez</label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cake-card" id="customCard">
+                            <div class="cake-card-header">
+                                <div class="cake-card-icon"><span>🎨</span></div><input type="radio" class="cake-type-radio" id="custom" name="cakeType" required="" value="custom"><label class="cake-card-title" for="custom">Pasteles Personalizados</label>
+                                <div class="cake-card-note"><span>Pan con humedad mínima para ser aptos para cualquier decoración</span></div>
+                            </div>
+                            <div id="customSection" class="cake-options-section" style="display:none;">
+                                <div>
+                                    <h4>Elige el sabor de pan (máximo 1)</h4>
+                                    <div class="options-grid">
+                                        <div class="option-item"><input type="radio" id="vainilla_bread" name="breadFlavor" value="vainilla"><label class="option-label" for="vainilla_bread">Vainilla</label></div>
+                                        <div class="option-item"><input type="radio" id="rompope_bread" name="breadFlavor" value="rompope"><label class="option-label" for="rompope_bread">Rompope</label></div>
+                                        <div class="option-item"><input type="radio" id="chocolate_bread" name="breadFlavor" value="chocolate"><label class="option-label" for="chocolate_bread">Chocolate</label></div>
+                                        <div class="option-item"><input type="radio" id="redvelvet_bread" name="breadFlavor" value="redvelvet"><label class="option-label" for="redvelvet_bread">Red Velvet</label></div>
+                                        <div class="option-item"><input type="radio" id="naranja_bread" name="breadFlavor" value="naranja"><label class="option-label" for="naranja_bread">Naranja</label></div>
+                                        <div class="option-item"><input type="radio" id="nata_bread" name="breadFlavor" value="nata"><label class="option-label" for="nata_bread">Nata</label></div>
+                                        <div class="option-item"><input type="radio" id="limon_bread" name="breadFlavor" value="limon"><label class="option-label" for="limon_bread">Limón</label></div>
+                                        <div class="option-item"><input type="radio" id="zanahoria_bread" name="breadFlavor" value="zanahoria"><label class="option-label" for="zanahoria_bread">Zanahoria</label></div>
+                                        <div class="option-item"><input type="radio" id="helado_bread" name="breadFlavor" value="helado"><label class="option-label" for="helado_bread">Pastel Helado</label></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4>Sabores de Relleno (máximo 1)</h4>
+                                    <div class="options-grid">
+                                        <div class="option-item"><input type="radio" id="fresas_fill" name="fillingFlavor" value="fresas"><label class="option-label" for="fresas_fill">Fresas con crema</label></div>
+                                        <div class="option-item"><input type="radio" id="durazno_fill" name="fillingFlavor" value="durazno"><label class="option-label" for="durazno_fill">Durazno</label></div>
+                                        <div class="option-item"><input type="radio" id="pinon_fill" name="fillingFlavor" value="pinon"><label class="option-label" for="pinon_fill">Piñón</label></div>
+                                        <div class="option-item"><input type="radio" id="pistache_fill" name="fillingFlavor" value="pistache"><label class="option-label" for="pistache_fill">Pistache</label></div>
+                                        <div class="option-item"><input type="radio" id="oreo_fill" name="fillingFlavor" value="oreo"><label class="option-label" for="oreo_fill">Oreo</label></div>
+                                        <div class="option-item"><input type="radio" id="moka_fill" name="fillingFlavor" value="moka"><label class="option-label" for="moka_fill">Moka</label></div>
+                                        <div class="option-item"><input type="radio" id="cereza_fill" name="fillingFlavor" value="cereza"><label class="option-label" for="cereza_fill">Cereza con nuez</label></div>
+                                        <div class="option-item"><input type="radio" id="nuez_fill" name="fillingFlavor" value="nuez"><label class="option-label" for="nuez_fill">Nuez</label></div>
+                                        <div class="option-item"><input type="radio" id="frutos_fill" name="fillingFlavor" value="frutos"><label class="option-label" for="frutos_fill">Frutos rojos</label></div>
+                                        <div class="option-item"><input type="radio" id="coctel_fill" name="fillingFlavor" value="coctel"><label class="option-label" for="coctel_fill">Coctel de frutas</label></div>
+                                        <div class="option-item"><input type="radio" id="coco_fill" name="fillingFlavor" value="coco"><label class="option-label" for="coco_fill">Coco</label></div>
+                                        <div class="option-item"><input type="radio" id="mango_fill" name="fillingFlavor" value="mango"><label class="option-label" for="mango_fill">Mango</label></div>
+                                        <div class="option-item"><input type="radio" id="chocoavellana_fill" name="fillingFlavor" value="chocoavellana"><label class="option-label" for="chocoavellana_fill">Chocoavellana</label></div>
+                                        <div class="option-item"><input type="radio" id="cajeta_fill" name="fillingFlavor" value="cajeta"><label class="option-label" for="cajeta_fill">Cajeta con nuez</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cake-card" id="premiumCard">
+                            <div class="cake-card-header">
+                                <div class="cake-card-icon"><span>💎</span></div><input type="radio" class="cake-type-radio" id="premium" name="cakeType" required="" value="premium"><label class="cake-card-title" for="premium">Pasteles Premium</label>
+                                <div class="cake-card-note"><span>Los pasteles premium no son combinables con otros sabores</span></div>
+                            </div>
+                            <div id="premiumSection" class="cake-options-section" style="display:none;">
+                                <div class="premium-grid">
+                                    <div class="premium-option"><input type="radio" id="matilda" name="premiumCake" value="matilda"><label for="matilda"><div class="premium-title">Chocolate Matilda</div><div class="premium-description">Chocolate turín amargo</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="redvelvet_premium" name="premiumCake" value="redvelvet"><label for="redvelvet_premium"><div class="premium-title">Red Velvet Premium</div><div class="premium-description">Clásico red velvet premium</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="zanahoria_premium" name="premiumCake" value="zanahoria"><label for="zanahoria_premium"><div class="premium-title">Zanahoria Premium</div><div class="premium-description">Zanahoria gourmet</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="selva" name="premiumCake" value="selva"><label for="selva"><div class="premium-title">Selva Negra</div><div class="premium-description">Chocolate, cereza y crema</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="mazapan" name="premiumCake" value="mazapan"><label for="mazapan"><div class="premium-title">Mazapán</div><div class="premium-description">Delicioso mazapán artesanal</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="ferrero" name="premiumCake" value="ferrero"><label for="ferrero"><div class="premium-title">Ferrero</div><div class="premium-description">Inspirado en Ferrero Rocher</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="rafaello" name="premiumCake" value="rafaello"><label for="rafaello"><div class="premium-title">Rafaello</div><div class="premium-description">Coco y almendra premium</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="opera" name="premiumCake" value="opera"><label for="opera"><div class="premium-title">Opera al Té Verde</div><div class="premium-description">Sofisticado pastel francés</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="tiramisu" name="premiumCake" value="tiramisu"><label for="tiramisu"><div class="premium-title">Tiramisú</div><div class="premium-description">Clásico italiano</div></label></div>
+                                    <div class="premium-option"><input type="radio" id="milhojas" name="premiumCake" value="milhojas"><label for="milhojas"><div class="premium-title">Mil Hojas</div><div class="premium-description">Hojaldre y crema pastelera</div></label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"><label>¿Tienes alguna alergia alimentaria? <span class="required">*</span></label>
+                    <div class="allergy-selector">
+                        <div class="allergy-option"><input type="radio" id="noAllergies" name="allergies" required="" value="no"><label for="noAllergies">No</label></div>
+                        <div class="allergy-option"><input type="radio" id="hasAllergies" name="allergies" required="" value="yes"><label for="hasAllergies">Sí</label></div>
+                    </div>
+                    <div id="allergyDetails" class="allergy-details" style="display:none;"><textarea id="allergyDescription" name="allergyDescription" placeholder="Por favor describe tus alergias alimentarias en detalle..." rows="3"></textarea><small>Esta información es muy importante para garantizar tu seguridad. Por favor sé específico.</small></div>
+                </div>
+                <div class="form-group"><label for="deliveryDate">Elige la fecha de entrega <span class="required">*</span></label><input type="date" id="deliveryDate" name="deliveryDate" required=""><small>Selecciona el día, mes y año y verifica nuevamente que sea correcto.</small></div>
+                <div class="form-group"><label for="deliveryTime">Elige el horario de entrega <span class="required">*</span></label><select id="deliveryTime" name="deliveryTime" required="">
+                        <option value="">Selecciona un horario</option>
+                        <option value="9:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                        <option value="18:00">6:00 PM</option>
+                        <option value="19:00">7:00 PM (Solo L-V)</option>
+                        <option value="20:00">8:00 PM (Solo L-V)</option>
+                    </select>
+                    <div class="delivery-info">
+                        <p><strong>Horarios de entrega en sucursal:</strong></p>
+                        <p>• Lunes a viernes: 9:00am a 8:00pm</p>
+                        <p>• Sábados: 9:00am a 7:00pm</p>
+                    </div>
+                </div>
+                <div class="form-group"><label>Tipo de entrega <span class="required">*</span></label>
+                    <div class="delivery-type-selector">
+                        <div class="delivery-option"><input type="radio" id="pickupDelivery" name="deliveryType" required="" value="pickup"><label for="pickupDelivery"><div class="delivery-icon">🏪</div><div class="delivery-title">Recoger en sucursal</div><div class="delivery-description">Sin costo adicional</div></label></div>
+                        <div class="delivery-option"><input type="radio" id="homeDelivery" name="deliveryType" required="" value="home"><label for="homeDelivery"><div class="delivery-icon">🚚</div><div class="delivery-title">Entrega a domicilio</div><div class="delivery-description">Solo para pasteles de 100+ personas</div></label></div>
+                    </div>
+                    <div id="homeDeliverySection" class="home-delivery-section" style="display:none;">
+                        <div class="delivery-info">
+                            <p><strong>Únicamente disponible para pasteles mayores a 100 personas, con costo extra.</strong></p>
+                        </div><textarea id="homeDeliveryAddress" name="homeDeliveryAddress" placeholder="Por favor copie y pegue el enlace a su ubicación desde Google Maps para una entrega y cotización más precisa." rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <p><strong>Para recibir tu cotización con precios personalizados</strong> completa el formulario lo más detallado posible, ya que solo será válido una vez y cualquier cambio posterior podrá reflejar un cargo extra.</p><br>
+                    <p><strong>Al recibir tu cotización con precios por WhatsApp</strong> es importante que realices tu depósito lo antes posible para poder confirmar tu pedido.</p><br>
+                    <p>📱 Los precios se envían ÚNICAMENTE por WhatsApp al número: <strong>+52 771-722-7089</strong></p>
+                </div>
+                <div class="form-actions">
+                    <div class="checkbox-group"><input type="checkbox" id="agreement" name="agreement" required="" style="width: 25px;"><label for="agreement">Estoy de acuerdo con los términos y condiciones <span class="required">*</span></label></div><button type="submit" class="submit-btn">📱 Solicitar Información por WhatsApp</button>
+                </div>
+            </form>
+        </div>
+    </div><a href="https://wa.me/527717227089?text=Hola%20Frimousse,%20me%20interesa%20cotizar%20un%20pastel" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a><button class="back-to-top" id="backToTop" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></button>
+    <div id="successModal" class="success-modal" style="display:none;">
+        <div class="success-modal-content">
+            <div class="success-header">
+                <div class="success-icon"><span>✅</span></div>
+                <h2>¡Cotización Enviada Exitosamente!</h2><button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div class="success-body">
+                <div class="quote-info">
+                    <p><strong>📋 Número de cotización:</strong><span id="quoteNumberDisplay"></span></p>
+                    <p><strong>⏰ Tiempo de respuesta:</strong> 2-4 horas en horario laboral</p>
+                    <p><strong>💡 Importante:</strong> Los precios NO se muestran en documentos web, solo por WhatsApp.</p>
+                </div>
+                <div class="success-actions">
+                    <p class="action-text"><strong>Para finalizar tu cotización:</strong></p>
+                    <div class="action-buttons"><button id="whatsappBtn" class="action-btn whatsapp-btn"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp </button><button id="downloadPdfBtn" class="action-btn download-btn"><i class="fas fa-download"></i> Descargar PDF </button></div>
+                    <p class="help-text"><strong>📱 Haz clic en "Enviar por WhatsApp"</strong> para compartir tu cotización y recibir los precios. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

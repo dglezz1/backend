@@ -1,0 +1,10 @@
+/* Font Awesome Icons - Minimal version */
+/* Using CDN version from the HTML, this is just a placeholder */
+.fa, .fas, .fab {
+    font-family: "Font Awesome 5 Free", "Font Awesome 5 Brands";
+    font-weight: 900;
+}
+
+.fa-home::before { content: "\f015"; }
+.fa-whatsapp::before { content: "\f232"; }
+.fa-arrow-up::before { content: "\f062"; }

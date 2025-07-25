@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cakes
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    build: .
+    command: npm run start:dev
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/cakes
+      CLOUDINARY_CLOUD_NAME: djtww9ixh
+      CLOUDINARY_API_KEY: 299641918136395
+      CLOUDINARY_API_SECRET: iQ6gerRTgEl1cwT8AGkGBhrWzkw
+    depends_on:
+      - db
+volumes:
+  db_data:
