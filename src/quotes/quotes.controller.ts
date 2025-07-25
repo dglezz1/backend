@@ -45,6 +45,15 @@ export class QuotesController {
       const allergies = typeof body.allergies === 'string' ? (body.allergies === 'true' || body.allergies === 'yes') : !!body.allergies;
       const agreement = typeof body.agreement === 'string' ? (body.agreement === 'true' || body.agreement === 'yes') : !!body.agreement;
       const quote = await this.quotesService.createQuote({ ...body, guests, allergies, agreement, imageUrls });
+      // Generar número de cotización: fecha (ddmmyy) + id usando createdAt
+      let quoteNumber = '';
+      if (quote.createdAt && quote.id) {
+        const now = new Date(quote.createdAt);
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = String(now.getFullYear()).slice(-2);
+        quoteNumber = `${day}${month}${year}-${quote.id}`;
+      }
       // Banner visual para frontend con botones de WhatsApp y descarga PDF (solo como datos, no HTML)
       const pdfUrl = `/api/quotes/${quote.id}/pdf`;
       const whatsappNumber = '+52 771-722-7089';
@@ -52,7 +61,7 @@ export class QuotesController {
       return {
         success: true,
         data: {
-          quoteNumber: quote.id,
+          quoteNumber,
           whatsappNumber,
           pdfUrl,
           quote,

@@ -2,8 +2,10 @@
 
 
 import PDFDocument from 'pdfkit';
+// Si sigue el error, usar: import * as PDFDocument from 'pdfkit';
 import axios from 'axios';
-const LOGO_URL = 'https://res.cloudinary.com/djtww9ixh/image/upload/v1710000000/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png';
+import fs from 'fs';
+const LOGO_PATH = 'public/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png';
 const WHATSAPP_NUMBER = '771-722-7089';
 const WHATSAPP_LINK = `https://wa.me/52${WHATSAPP_NUMBER.replace(/-/g, '')}?text=Hola%20Frimousse,%20me%20interesa%20cotizar%20un%20pastel`;
 
@@ -15,11 +17,27 @@ export async function generateQuotePdf(quote: Partial<any>): Promise<Buffer> {
   doc.on('data', buffers.push.bind(buffers));
   doc.on('end', () => {});
 
-  // Banner superior
+  // Banner superior con logo y número de cotización
   doc.rect(0, 0, doc.page.width, 60).fill('#f8bbd0');
+  try {
+    const logoBuffer = fs.readFileSync(LOGO_PATH);
+    doc.image(logoBuffer, doc.page.width / 2 - 60, 10, { width: 120, height: 40 });
+  } catch {}
+  // Generar número de cotización: fecha (ddmmyy) + id
+  let quoteNumber = '';
+  if (quote.createdAt && quote.id) {
+    const now = new Date(quote.createdAt);
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = String(now.getFullYear()).slice(-2);
+    quoteNumber = `${day}${month}${year}-${quote.id}`;
+  }
   doc.fillColor('#fff').fontSize(28).font('Helvetica-Bold').text('Frimousse Pâtisserie', 0, 18, { align: 'center', width: doc.page.width });
-  doc.moveDown(2);
+  doc.moveDown(0.5);
   doc.fillColor('black').font('Helvetica').fontSize(20).text('🎂 Cotización de Pastel', { align: 'center' });
+  if (quoteNumber) {
+    doc.fontSize(14).fillColor('#c2185b').text(`No. Cotización: ${quoteNumber}`, { align: 'center' });
+  }
   doc.moveDown();
 
   // Datos del cliente y cotización en tabla
@@ -42,18 +60,6 @@ export async function generateQuotePdf(quote: Partial<any>): Promise<Buffer> {
     ['Dirección de entrega', quote.homeDeliveryAddress || '-'],
     ['Aceptó términos', quote.agreement ? 'Sí' : 'No'],
   ];
-  // Banner superior con logo y nombre
-  let logoBuffer: Buffer | undefined;
-  try {
-    const logoRes = await axios.get(LOGO_URL, { responseType: 'arraybuffer' });
-    logoBuffer = Buffer.from(logoRes.data, 'binary');
-    doc.image(logoBuffer, doc.page.width / 2 - 60, 30, { width: 120, height: 120 });
-  } catch {}
-  doc.moveDown(7);
-  doc.font('Helvetica-Bold').fontSize(26).fillColor('#c2185b').text('Frimousse Pâtisserie', { align: 'center' });
-  doc.moveDown(0.5);
-  doc.font('Helvetica').fontSize(16).fillColor('#4c555a').text('Cotización de Pastel', { align: 'center' });
-  doc.moveDown(1.5);
   let y = doc.y + 10;
   for (const [label, value] of dataRows) {
     doc.fillColor('#c2185b').text(label + ':', 60, y, { continued: true, width: 180 });
