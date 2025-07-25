@@ -27,10 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
         guestsInput.addEventListener('input', function() {
             const guests = parseInt(this.value);
             guestCount.textContent = guests;
-            
-            // Mostrar alerta para entrega a domicilio
+            // Mostrar alerta para entrega a domicilio SOLO si es menos de 100 personas
             if (deliveryAlert) {
-                if (guests >= 100) {
+                if (guests < 100) {
                     deliveryAlert.style.display = 'block';
                 } else {
                     deliveryAlert.style.display = 'none';
@@ -375,28 +374,58 @@ document.addEventListener('DOMContentLoaded', function() {
         if (overlay) overlay.remove();
     }
     
-    function showSuccessMessage(result) {
-        hideLoadingMessage();
-        
-        const message = `
-            ✅ ¡Solicitud enviada exitosamente!
-            
-            📋 Número de cotización: ${result.data.quoteNumber}
-            
-            📱 Tu cotización con precios será enviada por WhatsApp al número que proporcionaste.
-            
-            ⏰ Tiempo de respuesta: 2-4 horas en horario laboral
-            
-            📞 Número de contacto: ${result.data.whatsappNumber}
-            
-            💡 Recuerda: Los precios NO se muestran en documentos web, solo por WhatsApp.
-        `;
-        
-        alert(message);
-        
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function showSuccessMessage(result) {
+    hideLoadingMessage();
+    // Eliminar banner anterior si existe
+    const oldBanner = document.getElementById('successBanner');
+    if (oldBanner) oldBanner.remove();
+
+    const quoteNumber = result.data.quoteNumber;
+    const pdfUrl = result.data.pdfUrl;
+    const whatsappNumber = result.data.whatsappNumber;
+    const fecha = new Date().toLocaleDateString('es-MX');
+    const mensajeWA = encodeURIComponent(`Hola, envío mi formato de cotización\nNúmero: ${quoteNumber}\nFecha: ${fecha}\nPDF: ${window.location.origin + pdfUrl}`);
+    const waLink = `https://wa.me/527717227089?text=${mensajeWA}`;
+
+    const banner = document.createElement('div');
+    banner.id = 'successBanner';
+    banner.style.cssText = `
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 10001;
+        background: #fff;
+        border-bottom: 4px solid #667eea;
+        box-shadow: 0 8px 32px rgba(102,126,234,0.12);
+        padding: 32px 16px 24px 16px;
+        text-align: center;
+        max-width: 600px;
+        margin: 40px auto;
+        border-radius: 0 0 18px 18px;
+    `;
+    banner.innerHTML = `
+        <div style="font-size:2.2rem;color:#28a745;margin-bottom:10px;">✅ ¡Solicitud enviada exitosamente!</div>
+        <div style="font-size:1.2rem;margin-bottom:10px;">Número de cotización: <b>${quoteNumber}</b></div>
+        <div style="display:flex;justify-content:center;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+            <a href="${waLink}" target="_blank" class="btn btn-success" style="font-size:1.1rem;padding:10px 22px;border-radius:8px;display:inline-block;"><i class="fab fa-whatsapp"></i> Continuar en WhatsApp</a>
+            <a href="${pdfUrl}" target="_blank" class="btn btn-primary" style="font-size:1.1rem;padding:10px 22px;border-radius:8px;display:inline-block;"><i class="fas fa-file-pdf"></i> Descargar PDF</a>
+        </div>
+        <div style="color:#dc3545;font-weight:500;margin-bottom:10px;">⚠️ Para obtener una cotización final es necesario que envíes este archivo vía WhatsApp.</div>
+        <div style="background:#f8f9fa;border-radius:10px;padding:18px 12px 10px 12px;margin-bottom:10px;max-width:420px;margin:auto;">
+            <div style="font-weight:700;color:#667eea;font-size:1.1rem;margin-bottom:6px;">DATOS DE PAGO</div>
+            <div style="font-size:1rem;text-align:left;max-width:350px;margin:auto;">
+                <b>Número de tarjeta:</b> 5579 0700 3293 1530<br>
+                <b>Banco:</b> Santander<br>
+                <b>Nombre:</b> Erika
+            </div>
+            <div style="font-size:0.95rem;color:#888;margin-top:8px;">Para agendar tu pedido es necesario reservar con el 50%.</div>
+        </div>
+        <div style="color:#666;font-size:0.95rem;">📱 Tu cotización con precios será enviada por WhatsApp al número que proporcionaste.<br>⏰ Tiempo de respuesta: 2-4 horas en horario laboral.<br>💡 Los precios NO se muestran en documentos web, solo por WhatsApp.</div>
+        <button id="closeBannerBtn" class="btn btn-link" style="margin-top:12px;color:#667eea;font-weight:600;">Cerrar</button>
+    `;
+    document.body.appendChild(banner);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('closeBannerBtn').onclick = () => banner.remove();
+}
     
     function showMessage(text, type = 'info') {
         hideLoadingMessage();

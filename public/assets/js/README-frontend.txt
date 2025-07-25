@@ -1,0 +1,1 @@
+Solo debe usarse el archivo form-handler.js para el formulario de cotización. El resto de los scripts JS en /assets/js/js/ y /assets/js/js/js/ han sido eliminados para evitar conflictos y referencias a otros backends. Bootstrap y dependencias visuales siguen funcionando normalmente.

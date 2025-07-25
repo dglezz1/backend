@@ -46,11 +46,13 @@ export class QuotesController {
       const agreement = typeof body.agreement === 'string' ? (body.agreement === 'true' || body.agreement === 'yes') : !!body.agreement;
       const quote = await this.quotesService.createQuote({ ...body, guests, allergies, agreement, imageUrls });
       // Responder con el formato esperado por el frontend
+      const pdfUrl = `${process.env.PUBLIC_BASE_URL || ''}/api/quotes/${quote.id}/pdf`;
       return {
         success: true,
         data: {
           quoteNumber: quote.id,
           whatsappNumber: '+52 771-722-7089',
+          pdfUrl,
           quote
         }
       };
