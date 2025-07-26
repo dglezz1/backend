@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Cotización Frimousse Pâtisserie</title>
+    <!-- El CSS se inyecta desde el backend, no se debe usar link externo -->
+</head>
+
+<body>
+    <div class="banner"><img src="{{logoPath}}" alt="Logo" class="logo">
+        <h1>Frimousse Pastselería</h1>
+        <h2>Cotización de Pastel</h2>
+        <p class="quote-number">No. Cotización: {{quoteNumber}}</p>
+    </div>
+    <section>
+        <h3>Datos del Cliente</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each clienteRows}}
+                <tr>
+                    <td>{{this.0}}</td>
+                    <td>{{this.1}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h3>Detalles del Pastel</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each pastelRows}}
+                <tr>
+                    <td>{{this.0}}</td>
+                    <td>{{this.1}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h3>Entrega y Condiciones</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each entregaRows}}
+                <tr>
+                    <td>{{this.0}}</td>
+                    <td>{{this.1}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h3>Imágenes de referencia</h3>
+        <div class="images">
+            {{#each imageUrls}}
+            <img src="{{this}}" class="ref-image" width="200" height="150">
+            {{/each}}
+        </div>
+    </section>
+    <div class="footer">
+        <p style="font-size: 20px;">Para obtener una cotización final, contáctanos por WhatsApp: <a href="{{whatsappLink}}">{{whatsappNumber}}</a></p>
+        <p class="brand">Frimousse Pâtisserie · Cotización generada automáticamente</p>
+    </div>
+</body>
+
+</html>
