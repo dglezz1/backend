@@ -4,8 +4,8 @@
 import * as fs from 'fs';
 const path = require('path');
 const pdf = require('html-pdf-node');
-const BASE_URL = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
-const LOGO_PATH = `${BASE_URL}/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png`;
+const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
+const LOGO_PATH = `${PUBLIC_BASE_URL}/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png`;
 let TEMPLATE_PATH = path.join(__dirname, 'pdf-template.html');
 let CSS_PATH = path.join(__dirname, 'pdf-template.css');
 // Si no existe en dist, buscar en src
@@ -43,7 +43,7 @@ export async function generateQuotePdf(quote: Partial<any>): Promise<Buffer> {
   }
   // Reemplazar variables en el HTML
   // Enlace único de vista previa PDF
-  const previewUrl = `${BASE_URL}/api/quotes/${quote.id}/pdf`;
+  const previewUrl = `${PUBLIC_BASE_URL}/api/quotes/${quote.id}/pdf`;
   // Mensaje WhatsApp con enlace único
   const whatsappMessage = encodeURIComponent(`Hola Frimousse, me interesa cotizar un pastel. Aquí está mi cotización: ${previewUrl}`);
   html = html.replace(/{{logoPath}}/g, LOGO_PATH)
