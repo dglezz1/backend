@@ -59,7 +59,8 @@ export class QuotesController {
       const pdfPreviewUrl = `/api/quotes/${quote.id}/pdf/preview`;
       const whatsappNumber = '+52 771-722-7089';
       // Mensaje con enlace único
-      const whatsappMessage = encodeURIComponent(`Hola Frimousse, me interesa cotizar un pastel. Aquí está mi cotización: http://localhost:3000${pdfPreviewUrl}`);
+      const baseUrl = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
+      const whatsappMessage = encodeURIComponent(`Hola Frimousse, me interesa cotizar un pastel. Aquí está mi cotización: ${baseUrl}${pdfPreviewUrl}`);
       const whatsappLink = `https://wa.me/527717227089?text=${whatsappMessage}`;
       return {
         success: true,
