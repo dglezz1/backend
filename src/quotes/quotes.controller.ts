@@ -93,16 +93,29 @@ export class QuotesController {
   @ApiParam({ name: 'id', description: 'ID de la cotización' })
   @ApiResponse({ status: 200, description: 'Vista previa PDF.' })
   async previewQuotePdf(@Param('id') id: string, @Res() res: Response) {
-    const quote = await this.quotesService.getQuoteById(Number(id));
-    if (!quote) {
-      throw new BadRequestException('Cotización no encontrada');
+    try {
+      const quote = await this.quotesService.getQuoteById(Number(id));
+      if (!quote) {
+        throw new BadRequestException('Cotización no encontrada');
+      }
+      let pdfBuffer;
+      try {
+        pdfBuffer = await generateQuotePdf(quote);
+      } catch (pdfErr) {
+        // Loguea el error de PDF
+        console.error('Error al generar PDF (preview):', pdfErr);
+        throw new BadRequestException('Error interno al generar el PDF (preview): ' + (pdfErr?.message || pdfErr));
+      }
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `inline; filename="cotizacion_${id}.pdf"`,
+      });
+      res.end(pdfBuffer);
+    } catch (err) {
+      // Loguea el error general
+      console.error('Error en previewQuotePdf:', err);
+      throw err;
     }
-    const pdfBuffer = await generateQuotePdf(quote);
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="cotizacion_${id}.pdf"`,
-    });
-    res.end(pdfBuffer);
   }
 
   /**
@@ -112,15 +125,28 @@ export class QuotesController {
   @ApiParam({ name: 'id', description: 'ID de la cotización' })
   @ApiResponse({ status: 200, description: 'PDF generado correctamente.' })
   async getQuotePdf(@Param('id') id: string, @Res() res: Response) {
-    const quote = await this.quotesService.getQuoteById(Number(id));
-    if (!quote) {
-      throw new BadRequestException('Cotización no encontrada');
+    try {
+      const quote = await this.quotesService.getQuoteById(Number(id));
+      if (!quote) {
+        throw new BadRequestException('Cotización no encontrada');
+      }
+      let pdfBuffer;
+      try {
+        pdfBuffer = await generateQuotePdf(quote);
+      } catch (pdfErr) {
+        // Loguea el error de PDF
+        console.error('Error al generar PDF (descarga):', pdfErr);
+        throw new BadRequestException('Error interno al generar el PDF (descarga): ' + (pdfErr?.message || pdfErr));
+      }
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="cotizacion_${id}.pdf"`,
+      });
+      res.end(pdfBuffer);
+    } catch (err) {
+      // Loguea el error general
+      console.error('Error en getQuotePdf:', err);
+      throw err;
     }
-    const pdfBuffer = await generateQuotePdf(quote);
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="cotizacion_${id}.pdf"`,
-    });
-    res.end(pdfBuffer);
   }
 }
