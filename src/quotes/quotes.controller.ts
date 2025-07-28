@@ -56,14 +56,18 @@ export class QuotesController {
       }
       // Banner visual para frontend con botones de WhatsApp y descarga PDF (solo como datos, no HTML)
       const pdfUrl = `/api/quotes/${quote.id}/pdf`;
+      const pdfPreviewUrl = `/api/quotes/${quote.id}/pdf/preview`;
       const whatsappNumber = '+52 771-722-7089';
-      const whatsappLink = `https://wa.me/527717227089?text=Hola%20Frimousse,%20me%20interesa%20cotizar%20un%20pastel`;
+      // Mensaje con enlace único
+      const whatsappMessage = encodeURIComponent(`Hola Frimousse, me interesa cotizar un pastel. Aquí está mi cotización: http://localhost:3000${pdfPreviewUrl}`);
+      const whatsappLink = `https://wa.me/527717227089?text=${whatsappMessage}`;
       return {
         success: true,
         data: {
           quoteNumber,
           whatsappNumber,
           pdfUrl,
+          pdfPreviewUrl,
           quote,
           banner: {
             logo: '/assets/img/FRIMOUSSE_PATISSERIE__2_-removebg-preview.png',
@@ -71,6 +75,7 @@ export class QuotesController {
             message: 'Puedes contactarnos por WhatsApp para recibir tu precio final o descargar tu PDF.',
             whatsappLink,
             pdfUrl,
+            pdfPreviewUrl,
             brand: 'Frimousse Pâtisserie · Cotización generada automáticamente'
           }
         }
@@ -78,6 +83,25 @@ export class QuotesController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
+  }
+
+  /**
+   * Vista previa del PDF en el navegador (inline)
+   */
+  @Get(':id/pdf/preview')
+  @ApiParam({ name: 'id', description: 'ID de la cotización' })
+  @ApiResponse({ status: 200, description: 'Vista previa PDF.' })
+  async previewQuotePdf(@Param('id') id: string, @Res() res: Response) {
+    const quote = await this.quotesService.getQuoteById(Number(id));
+    if (!quote) {
+      throw new BadRequestException('Cotización no encontrada');
+    }
+    const pdfBuffer = await generateQuotePdf(quote);
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="cotizacion_${id}.pdf"`,
+    });
+    res.end(pdfBuffer);
   }
 
   /**

@@ -41,10 +41,15 @@ export async function generateQuotePdf(quote: Partial<any>): Promise<Buffer> {
     quoteNumber = `${day}${month}${year}-${quote.id}`;
   }
   // Reemplazar variables en el HTML
+  // Enlace único de vista previa PDF
+  const previewUrl = `http://localhost:3000/api/quotes/${quote.id}/pdf`;
+  // Mensaje WhatsApp con enlace único
+  const whatsappMessage = encodeURIComponent(`Hola Frimousse, me interesa cotizar un pastel. Aquí está mi cotización: ${previewUrl}`);
   html = html.replace(/{{logoPath}}/g, LOGO_PATH)
     .replace(/{{quoteNumber}}/g, quoteNumber)
     .replace(/{{whatsappNumber}}/g, '+52 771-722-7089')
-    .replace(/{{whatsappLink}}/g, `https://wa.me/527717227089?text=Hola%20Frimousse,%20me%20interesa%20cotizar%20un%20pastel`);
+    .replace(/{{whatsappLink}}/g, `https://wa.me/527717227089?text=${whatsappMessage}`)
+    .replace(/{{previewUrl}}/g, previewUrl);
   // Renderizar tablas
     function renderRows(rows: Array<[string, any]>): string {
     return rows.map(([campo, valor]: [string, any]) => `<tr><td style="color:rgb(72,66,68);">${campo}</td><td style="color:rgb(72,66,68);">${valor ?? '-'}</td></tr>`).join('');
