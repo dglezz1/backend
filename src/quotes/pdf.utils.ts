@@ -86,7 +86,14 @@ export async function generateQuotePdf(quote: Partial<any>): Promise<Buffer> {
   // Inyectar CSS
   html = html.replace('</head>', `<style>${css}</style></head>`);
   // Generar PDF usando html-pdf-node
-  const pdfOptions = { format: 'A4', printBackground: true };
+  const pdfOptions = {
+    format: 'A4',
+    printBackground: true,
+    puppeteerArgs: {
+      executablePath: '/usr/bin/chromium',
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    },
+  };
   const pdfBuffer = await pdf.generatePdf({ content: html }, pdfOptions);
   return pdfBuffer;
 }
