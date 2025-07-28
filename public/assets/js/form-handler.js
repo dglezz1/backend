@@ -22,21 +22,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const maxFiles = 5;
     const maxFileSize = 5 * 1024 * 1024; // 5MB
     
-    // Actualizar contador de invitados
+    // Actualizar contador de invitados y lógica de entrega
+    const homeDeliveryRadio = document.getElementById('homeDelivery');
     if (guestsInput && guestCount) {
-        guestsInput.addEventListener('input', function() {
-            const guests = parseInt(this.value);
+        function updateGuestAndDeliveryLogic() {
+            const guests = parseInt(guestsInput.value);
             guestCount.textContent = guests;
-            
-            // Mostrar alerta para entrega a domicilio
+            // Mostrar alerta para entrega a domicilio (<100)
             if (deliveryAlert) {
-                if (guests >= 100) {
+                if (guests < 100) {
                     deliveryAlert.style.display = 'block';
                 } else {
                     deliveryAlert.style.display = 'none';
                 }
             }
-        });
+            // Bloquear opción de entrega a domicilio si <100
+            if (homeDeliveryRadio) {
+                if (guests < 100) {
+                    homeDeliveryRadio.disabled = true;
+                    // Si estaba seleccionada, deselecciona y oculta sección
+                    if (homeDeliveryRadio.checked) {
+                        homeDeliveryRadio.checked = false;
+                        const homeDeliverySection = document.getElementById('homeDeliverySection');
+                        if (homeDeliverySection) homeDeliverySection.style.display = 'none';
+                    }
+                } else {
+                    homeDeliveryRadio.disabled = false;
+                }
+            }
+        }
+        // Inicializar en carga
+        updateGuestAndDeliveryLogic();
+        guestsInput.addEventListener('input', updateGuestAndDeliveryLogic);
     }
     
     // Manejo de tipos de pastel
@@ -377,25 +394,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function showSuccessMessage(result) {
         hideLoadingMessage();
-        
-        const message = `
-            ✅ ¡Solicitud enviada exitosamente!
-            
-            📋 Número de cotización: ${result.data.quoteNumber}
-            
-            📱 Tu cotización con precios será enviada por WhatsApp al número que proporcionaste.
-            
-            ⏰ Tiempo de respuesta: 2-4 horas en horario laboral
-            
-            📞 Número de contacto: ${result.data.whatsappNumber}
-            
-            💡 Recuerda: Los precios NO se muestran en documentos web, solo por WhatsApp.
-        `;
-        
-        alert(message);
-        
+        // Eliminar cualquier banner anterior
+        const oldBanner = document.getElementById('quoteBanner');
+        if (oldBanner) oldBanner.remove();
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Banner data desde el backend
+        const banner = result.data.banner;
+        // Crear el banner visualmente atractivo
+        const bannerDiv = document.createElement('div');
+        bannerDiv.id = 'quoteBanner';
+        bannerDiv.style.cssText = `
+            margin: 30px auto 0 auto;
+            max-width: 500px;
+            background: linear-gradient(135deg, #f8e1f4 0%, #e0e7ff 100%);
+            border-radius: 22px;
+            box-shadow: 0 6px 32px rgba(102,126,234,0.13);
+            padding: 32px 28px 28px 28px;
+            text-align: center;
+            border: 2px solid #a259b5;
+            position: relative;
+            z-index: 10;
+        `;
+        bannerDiv.innerHTML = `
+            <img src="${banner.logo}" alt="Logo" style="width:70px;height:70px;object-fit:contain;margin-bottom:10px;">
+            <h2 style="color:#a259b5;font-family:'Playfair Display',serif;font-weight:700;margin-bottom:8px;">${banner.title}</h2>
+            <p style="color:#333;font-size:1.1em;margin-bottom:18px;">${banner.message}</p>
+            <div style="margin-bottom:18px;">
+                <span style="display:inline-block;background:#e0e7ff;color:#667eea;font-weight:600;padding:6px 16px;border-radius:12px;font-size:1em;">📋 Cotización: <b>${result.data.quoteNumber}</b></span>
+            </div>
+            <div style="display:flex;justify-content:center;gap:18px;margin-bottom:10px;flex-wrap:wrap;">
+                <a href="${banner.whatsappLink}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25d366;color:white;font-weight:600;padding:12px 22px;border-radius:8px;font-size:1.1em;text-decoration:none;box-shadow:0 2px 8px rgba(37,211,102,0.13);transition:background 0.2s;">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="${banner.pdfUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#667eea;color:white;font-weight:600;padding:12px 22px;border-radius:8px;font-size:1.1em;text-decoration:none;box-shadow:0 2px 8px rgba(102,126,234,0.13);transition:background 0.2s;">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+            </div>
+            <div style="color:#888;font-size:0.98em;margin-top:10px;">⏰ Tiempo de respuesta: 2-4 horas en horario laboral<br>💡 Los precios NO se muestran en documentos web, solo por WhatsApp.</div>
+        `;
+
+        // Insertar el banner antes del formulario
+        const formContainer = document.querySelector('.form-container');
+        if (formContainer) {
+            formContainer.parentNode.insertBefore(bannerDiv, formContainer);
+        } else {
+            document.body.insertBefore(bannerDiv, document.body.firstChild);
+        }
     }
     
     function showMessage(text, type = 'info') {
